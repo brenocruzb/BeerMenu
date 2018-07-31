@@ -26,7 +26,7 @@
         android:layout_marginStart="10dp"
         android:contentDescription="@string/app_name"
         fresco:placeholderImage="@drawable/unselected_favorite"
-        fresco:placeholderImageScaleType="fitCenter"/>
+        fresco:placeholderImageScaleType="fitCenter" />
 
     <TextView
         android:id="@+id/tvNameBeer"

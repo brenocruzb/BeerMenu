@@ -7,14 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import br.com.breno.beermenu.Interface.MyResult
 import br.com.breno.beermenu.Domain.Beer
 import br.com.breno.beermenu.R
 import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.common.util.UriUtil
-import android.net.Uri
 
 
 class BeerAdapter constructor(private val context: Context, private val listBeer: ArrayList<Beer>, private val myResult: MyResult?) : RecyclerView.Adapter<BeerAdapter.MyViewHolder>(){
@@ -33,15 +31,10 @@ class BeerAdapter constructor(private val context: Context, private val listBeer
         holder.tvDescription.text = "${context.getString(R.string.breweded_in)} ${beer.firstBrewed}"
         holder.beerImage.setImageURI(beer.imageUrl)
 
+        val resourceId = (if(beer.favoriteStatus) R.drawable.selected_favorite else R.drawable.unselected_favorite)
+
         //local_db
-//        val uri = Uri.parse("res:///" + (if(beer.favoriteStatus) R.drawable.selected_favorite else R.drawable.unselected_favorite))
-
-        val uri = Uri.Builder()
-                .scheme(UriUtil.LOCAL_RESOURCE_SCHEME) // "res"
-                .path((if(beer.favoriteStatus) R.drawable.selected_favorite else R.drawable.unselected_favorite).toString())
-                .build()
-
-        holder.favoriteImage.setImageURI(uri)
+        holder.favoriteImage.setImageURI("res:///$resourceId")
     }
 
     override fun getItemCount(): Int {
@@ -50,6 +43,15 @@ class BeerAdapter constructor(private val context: Context, private val listBeer
 
     fun getList(): ArrayList<Beer>{
         return listBeer
+    }
+
+    fun clearList(){
+        listBeer.clear()
+        try {
+            notifyDataSetChanged()
+        }catch (e: Exception){
+            Log.e("MyError", if (e.message != null) e.message else e.toString())
+        }
     }
 
     fun addList(listBeer: List<Beer>){
@@ -73,7 +75,7 @@ class BeerAdapter constructor(private val context: Context, private val listBeer
     inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView), View.OnClickListener{
 
         val beerImage = itemView.findViewById<SimpleDraweeView>(R.id.imageBeer)!!
-        val favoriteImage = itemView.findViewById<ImageView>(R.id.favorite)!!
+        val favoriteImage = itemView.findViewById<SimpleDraweeView>(R.id.favorite)!!
         val tvNameBeer = itemView.findViewById<TextView>(R.id.tvNameBeer)!!
         val tvDescription = itemView.findViewById<TextView>(R.id.tvDescriptionBeer)!!
 

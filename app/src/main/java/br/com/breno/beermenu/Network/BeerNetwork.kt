@@ -10,8 +10,8 @@ class BeerNetwork constructor(context: Context) {
     private val mAppService = ApiClient.getClient(context)?.create(AppService::class.java)
     private val nameNetwork = "BeerNetwork"
 
-    fun get(): List<Beer>?{
-        val call = mAppService?.listBeers()
+    fun get(listFilter: HashMap<String, String>?): List<Beer>?{
+        val call = if (listFilter == null)  mAppService?.listBeers() else mAppService?.listBeersFiltered(listFilter)
 
         try{
             val response = call?.execute()

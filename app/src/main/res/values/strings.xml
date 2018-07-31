@@ -4,4 +4,13 @@
     <string name="breweded_in">Fabricado em:</string>
     <string name="on_click">onClick</string>
     <string name="favorite">favorite</string>
+    <string name="filter">Filtrar</string>
+    <string name="cancel">Cancelar</string>
+    <string name="filter_select">Selecione os Filtros</string>
+    <string name="hint_date">Exp (mm-yyyy)</string>
+    <string name="name">Nome:</string>
+    <string name="yeast">Fermento:</string>
+    <string name="brewed_before">Fabricado antes de:</string>
+    <string name="brewed_after">Fabricado depois de:</string>
+    <string name="invalide_input">Entrada inválida.</string>
 </resources>
