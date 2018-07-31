@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:fresco="http://schemas.android.com/apk/res-auto">
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/imageBeer"
+        android:layout_width="@dimen/image_dimension"
+        android:layout_height="@dimen/image_dimension"
+        fresco:placeholderImage="@drawable/beer"
+        android:layout_marginRight="10dp"
+        android:layout_marginEnd="10dp"
+        fresco:actualImageScaleType="centerInside"
+        />
+
+
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/favorite"
+        android:layout_width="@dimen/favorite_icon"
+        android:layout_height="@dimen/favorite_icon"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="10dp"
+        android:layout_marginStart="10dp"
+        android:contentDescription="@string/app_name"
+        fresco:placeholderImage="@drawable/unselected_favorite"
+        fresco:placeholderImageScaleType="fitCenter"/>
+
+    <TextView
+        android:id="@+id/tvNameBeer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/imageBeer"
+        android:layout_toRightOf="@id/imageBeer"
+        android:layout_toLeftOf="@+id/favorite"
+        android:layout_toStartOf="@id/favorite"
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:text="@string/default_name"
+        android:textColor="@color/colorTextPrimary"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/tvDescriptionBeer"
+        android:textColor="@color/colorTextSecondary"
+        android:textSize="14sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toEndOf="@+id/imageBeer"
+        android:layout_toRightOf="@id/imageBeer"
+        android:layout_toLeftOf="@+id/favorite"
+        android:layout_toStartOf="@id/favorite"
+        android:layout_below="@id/tvNameBeer"
+        android:gravity="center"
+        android:text="@string/default_name"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:alpha="0.12"
+        android:background="@android:color/black"
+        android:id="@+id/viewLine"/>
+
+</RelativeLayout>

@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">BeerMenu</string>
+    <string name="default_name">Cerveja Teste</string>
+    <string name="breweded_in">Fabricado em:</string>
+    <string name="on_click">onClick</string>
+    <string name="favorite">favorite</string>
+</resources>
