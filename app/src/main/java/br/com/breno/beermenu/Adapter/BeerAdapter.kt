@@ -15,7 +15,11 @@ import com.facebook.drawee.view.SimpleDraweeView
 import com.facebook.common.util.UriUtil
 
 
-class BeerAdapter constructor(private val context: Context, private val listBeer: ArrayList<Beer>, private val myResult: MyResult?) : RecyclerView.Adapter<BeerAdapter.MyViewHolder>(){
+class BeerAdapter constructor(private val context: Context, private val myResult: MyResult?) : RecyclerView.Adapter<BeerAdapter.MyViewHolder>(){
+
+    //List
+    private val listBeer: ArrayList<Beer> = ArrayList()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val view = inflater.inflate(R.layout.item_beer, parent, false)
@@ -27,7 +31,7 @@ class BeerAdapter constructor(private val context: Context, private val listBeer
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val beer: Beer = listBeer[position]
 
-        holder.tvNameBeer.text = beer.name
+        holder.tvNameBeer.text = "${beer.name} <-> $position"
         holder.tvDescription.text = "${context.getString(R.string.breweded_in)} ${beer.firstBrewed}"
         holder.beerImage.setImageURI(beer.imageUrl)
 

@@ -1,116 +1,349 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbarTop"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
         app:title="@string/filter_select"/>
 
-    <RelativeLayout
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_below="@id/toolbarTop"
+        android:layout_above="@+id/layoutButton"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_height="match_parent">
 
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/checkBox1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:text="@string/name" />
-
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/editText1"
+        <LinearLayout
+            android:id="@+id/main_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/checkBox1"
-            android:layout_toRightOf="@+id/checkBox1"
-            android:enabled="false"/>
+            android:orientation="vertical">
 
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/editText1"
-            android:text="@string/yeast" />
 
-        <android.support.v7.widget.AppCompatEditText
-            android:id="@+id/editText2"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/checkBox2"
-            android:layout_toRightOf="@+id/checkBox2"
-            android:layout_below="@id/editText1"
-            android:enabled="false"/>
+            android:layout_margin="10dp"
+            android:layout_marginBottom="20dp">
 
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/checkBox3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:text="@string/brewed_before" />
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="@string/favorite_select" />
 
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/checkBox1"
+                android:text="@string/abv_gt" />
 
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox2"
+                android:layout_toRightOf="@+id/checkBox2"
+                android:layout_below="@id/checkBox1"
+                android:inputType="number"
+                android:enabled="false"/>
 
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inputLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/checkBox3"
-            android:layout_toRightOf="@+id/checkBox3"
-            android:layout_below="@id/editText2">
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText2"
+                android:text="@string/abv_lt" />
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/editText3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_date"
-                android:enabled="false" />
+                android:layout_toEndOf="@+id/checkBox3"
+                android:layout_toRightOf="@+id/checkBox3"
+                android:layout_below="@id/editText2"
+                android:inputType="number"
+                android:enabled="false"/>
 
-        </android.support.design.widget.TextInputLayout>
-
-
-        <android.support.v7.widget.AppCompatCheckBox
-            android:id="@+id/checkBox4"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/viewLineBottom"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
-            android:text="@string/brewed_after" />
-
-        <android.support.design.widget.TextInputLayout
-            android:id="@+id/inputLayout4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/checkBox4"
-            android:layout_toRightOf="@+id/checkBox4"
-            android:layout_below="@id/inputLayout3">
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText3"
+                android:text="@string/ibu_gt" />
 
             <android.support.v7.widget.AppCompatEditText
                 android:id="@+id/editText4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/hint_date"
+                android:layout_toEndOf="@+id/checkBox4"
+                android:layout_toRightOf="@+id/checkBox4"
+                android:layout_below="@id/editText3"
+                android:inputType="number"
                 android:enabled="false"/>
 
-        </android.support.design.widget.TextInputLayout>
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText4"
+                android:text="@string/ibu_lt" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox5"
+                android:layout_toRightOf="@+id/checkBox5"
+                android:layout_below="@id/editText4"
+                android:inputType="number"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText5"
+                android:text="@string/ebc_gt" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox6"
+                android:layout_toRightOf="@+id/checkBox6"
+                android:layout_below="@id/editText5"
+                android:inputType="number"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText6"
+                android:text="@string/ebc_lt" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox7"
+                android:layout_toRightOf="@+id/checkBox7"
+                android:layout_below="@id/editText6"
+                android:inputType="number"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText7"
+                android:text="@string/name" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox8"
+                android:layout_toRightOf="@+id/checkBox8"
+                android:layout_below="@id/editText7"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox9"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_below="@+id/editText8"
+                android:text="@string/yeast" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText9"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox9"
+                android:layout_toRightOf="@+id/checkBox9"
+                android:layout_below="@id/editText8"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_below="@id/editText9"
+                android:text="@string/brewed_before" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayout10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox10"
+                android:layout_toRightOf="@+id/checkBox10"
+                android:layout_below="@id/editText9">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/editText10"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_date"
+                    android:enabled="false" />
+
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox11"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/inputLayout10"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/brewed_after" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayout11"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox11"
+                android:layout_toRightOf="@+id/checkBox11"
+                android:layout_below="@id/inputLayout10">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/editText11"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_date"
+                    android:enabled="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox12"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/inputLayout11"
+                android:text="@string/hops" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText12"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox12"
+                android:layout_toRightOf="@+id/checkBox12"
+                android:layout_below="@id/inputLayout11"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox13"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText12"
+                android:text="@string/malt" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText13"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox13"
+                android:layout_toRightOf="@+id/checkBox13"
+                android:layout_below="@id/editText12"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox14"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@id/editText13"
+                android:text="@string/food" />
+
+            <android.support.v7.widget.AppCompatEditText
+                android:id="@+id/editText14"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox14"
+                android:layout_toRightOf="@+id/checkBox14"
+                android:layout_below="@id/editText13"
+                android:enabled="false"/>
+
+            <android.support.v7.widget.AppCompatCheckBox
+                android:id="@+id/checkBox15"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/editText14"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentLeft="true"
+                android:text="@string/ids" />
+
+            <android.support.design.widget.TextInputLayout
+                android:id="@+id/inputLayout15"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/checkBox15"
+                android:layout_toRightOf="@+id/checkBox15"
+                android:layout_below="@id/editText14">
+
+                <android.support.v7.widget.AppCompatEditText
+                    android:id="@+id/editText15"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/hint_id"
+                    android:enabled="false"/>
+            </android.support.design.widget.TextInputLayout>
+
+        </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <RelativeLayout
+        android:id="@+id/layoutButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="bottom"
+        android:gravity="bottom|end"
+        android:layout_alignParentBottom="true">
 
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:alpha="0.12"
-            android:layout_below="@id/inputLayout4"
             android:background="@android:color/black"
             android:id="@+id/viewLineBottom"
             />
@@ -133,8 +366,4 @@
             android:layout_alignParentEnd="true"
             android:text="@string/filter"/>
     </RelativeLayout>
-
-
-
-
-</LinearLayout>
+</RelativeLayout>

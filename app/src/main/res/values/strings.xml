@@ -13,4 +13,18 @@
     <string name="brewed_before">Fabricado antes de:</string>
     <string name="brewed_after">Fabricado depois de:</string>
     <string name="invalide_input">Entrada inválida.</string>
+    <string name="error_conection">Houve uma falha ao tentar se conectar com o servidor.</string>
+    <string name="favorite_select">Selecionar Favoritos</string>
+    <string name="abv_gt">ABV maior que:</string>
+    <string name="abv_lt">ABV menor que:</string>
+    <string name="ibu_gt">IBU maior que:</string>
+    <string name="ibu_lt">IBU menor que:</string>
+    <string name="ebc_gt">EBC maior que:</string>
+    <string name="ebc_lt">EBC menor que:</string>
+    <string name="hops">Lúpulo:</string>
+    <string name="malt">Malte:</string>
+    <string name="food">Comida:</string>
+    <string name="ids">ID\'s</string>
+    <string name="hint_id">Exp (A|B|C)</string>
+    <string name="toolbar_title">Menu de Cervejas</string>
 </resources>

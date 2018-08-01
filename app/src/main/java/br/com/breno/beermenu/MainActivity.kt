@@ -14,21 +14,34 @@ import br.com.breno.beermenu.Task.GetBeer
 import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.activity_main.*
 import android.content.Intent
+import android.support.v7.widget.RecyclerView
+import br.com.breno.beermenu.Bo.BeerBo
 import br.com.breno.beermenu.Dialog.FilterBeerDialog
 import br.com.breno.beermenu.Interface.GetItemsFilter
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 
 
 class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
 
-    private var intentFilter: Intent? = null
+    private lateinit var adapter: BeerAdapter
+
+    private val listFilter = HashMap<String, String>()
+    private lateinit var beerBo: BeerBo
+
+    private inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Fresco.initialize(this)
         setContentView(R.layout.activity_main)
 
+        //Bo
+        beerBo = BeerBo(this)
+
         //Toolbar
         toolbarMain.inflateMenu(R.menu.menu_filter)
+        toolbarMain.title = getString(R.string.toolbar_title)
         toolbarMain.setOnMenuItemClickListener {item: MenuItem ->
             val id = item.itemId
 
@@ -36,20 +49,14 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
                 R.id.filter_toolbar ->{
                     val filterBeerDialog = FilterBeerDialog()
 
-//                    if (arguments != null) {
-//                        val args = Bundle()
-//                        val gson = Gson()
-//                        args.putString(resources.getString(R.string.beer), gson.toJson(beer))
-//                        filterBeerDialog.arguments = args
-//                    }
-
+                    val args = Bundle()
+                    args.putString(resources.getString(R.string.filter), Gson().toJson(listFilter))
+                    filterBeerDialog.arguments = args
 
 //                    filterBeerDialog.setTargetFragment(Fragment(), Util.FILTER_BEER)
                     filterBeerDialog.show(supportFragmentManager, "missiles")
                 }
             }
-
-
             true
         }
 
@@ -57,67 +64,179 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
         val context: Context = this
         val myResult: MyResult = this
         val getData: GetData = this
+        var loading = true
 
         //Linear Layout
         val llm = LinearLayoutManager(this).apply {
             orientation = LinearLayoutManager.VERTICAL
         }
 
-        //List
-        val listBeer: ArrayList<Beer> = ArrayList()
-
         //Adapter
-        val adapter = BeerAdapter(context ,listBeer, myResult)
+        adapter = BeerAdapter(context, myResult)
 
         //Recycler
         myRecyclerView.setHasFixedSize(true)
         myRecyclerView.layoutManager = llm
         myRecyclerView.adapter = adapter
+        myRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
+            override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                if(dy > 0){
+                    val lastItemPosition: Int = llm.findLastVisibleItemPosition()
+                    val isMultiple: Boolean = (lastItemPosition + 1) % 25 == 0
+
+                    if(isMultiple && loading){
+                        if(lastItemPosition + llm.childCount >= llm.itemCount){
+                            loading = false
+
+                            listFilter[Util.Filter.PAGE] = ((lastItemPosition + 1) / 25 + 1).toString()
+
+                            val myTask = GetBeer(context, getData, myProgressBar)
+                            myTask.execute(listFilter)
+                        }
+                    }else if(!isMultiple && !loading){
+                        loading = true
+                    }
+                }
+            }
+        })
+
+        if(savedInstanceState != null && savedInstanceState.containsKey(Util.STATE_ACTIVITY)){
+            val list: HashMap<String, String> = Gson().fromJson(savedInstanceState.getString(Util.STATE_ACTIVITY))
+            listFilter.clear()
+            listFilter.putAll(list)
+        }
 
         val myTask = GetBeer(context, getData, myProgressBar)
-        myTask.execute()
-
+        myTask.execute(listFilter)
     }
 
-    override fun myResult(result: Int, message: String) {
+    //Salva o filtro para o usuário não perder a lista caso rotacione o celular
+    override fun onSaveInstanceState(outState: Bundle?) {
+        outState?.putString(Util.STATE_ACTIVITY, Gson().toJson(listFilter))
 
-        val adapter = myRecyclerView.adapter as BeerAdapter
+        super.onSaveInstanceState(outState)
+    }
+
+    //Retorno do Adapter
+    override fun myResult(result: Int, message: String) {
         val listBeer: ArrayList<Beer> = adapter.getList()
 
         when(message){
             getString(R.string.on_click) -> Toast.makeText(this, listBeer[result].name, Toast.LENGTH_LONG).show()
             getString(R.string.favorite) -> {
+
+                val idBeer = listBeer[result].id
+
+                if(beerBo.exists(idBeer))
+                    beerBo.delete(idBeer)
+                else
+                    beerBo.insert(idBeer)
+
                 adapter.markFavorite(result)
             }
         }
     }
 
+    //Retorno do REST
     override fun getResultListBeer(listBeer: List<Beer>?) {
         if(listBeer != null){
-            val adapter = myRecyclerView.adapter as BeerAdapter
-            adapter.clearList()
+            listBeer.forEach {
+                item: Beer -> item.favoriteStatus = beerBo.exists(item.id)
+            }
+
             adapter.addList(listBeer)
+        }else{
+            Toast.makeText(this, getString(R.string.error_conection), Toast.LENGTH_LONG).show()
         }
     }
 
+    //Rotorno dos Filtros
     override fun getItemsFilter(requestCode: Int, resultCode: Int, data: Intent) {
         if(resultCode == Util.FILTER_BEER){
-            intentFilter = data
-            val listFilter = HashMap<String, String>()
+            adapter.clearList()
+            listFilter.remove(Util.Filter.PAGE)
 
             if(data.extras != null){
-                if(data.extras.keySet().contains(getString(R.string.name)))
-                    listFilter["beer_name"] = data.extras[getString(R.string.name)].toString()
-                if(data.extras.keySet().contains(getString(R.string.yeast)))
-                    listFilter["yeast"] = data.extras[getString(R.string.yeast)].toString()
-                if(data.extras.keySet().contains(getString(R.string.brewed_before)))
-                    listFilter["brewed_before"] = data.extras[getString(R.string.brewed_before)].toString()
-                if(data.extras.keySet().contains(getString(R.string.brewed_after)))
-                    listFilter["brewed_after"] = data.extras[getString(R.string.brewed_after)].toString()
+                if(data.extras.keySet().contains(getString(R.string.favorite)))
+                    listFilter[getString(R.string.favorite)] = data.extras[getString(R.string.favorite)].toString()
+                else
+                    listFilter.remove(getString(R.string.favorite))
+
+                if(data.extras.keySet().contains(Util.Filter.ABV_GT))
+                    listFilter[Util.Filter.ABV_GT] = data.extras[Util.Filter.ABV_GT].toString()
+                else
+                    listFilter.remove(Util.Filter.ABV_GT)
+
+                if(data.extras.keySet().contains(Util.Filter.ABV_LT))
+                    listFilter[Util.Filter.ABV_LT] = data.extras[Util.Filter.ABV_LT].toString()
+                else
+                    listFilter.remove(Util.Filter.ABV_LT)
+
+                if(data.extras.keySet().contains(Util.Filter.IBU_GT))
+                    listFilter[Util.Filter.IBU_GT] = data.extras[Util.Filter.IBU_GT].toString()
+                else
+                    listFilter.remove(Util.Filter.IBU_GT)
+
+                if(data.extras.keySet().contains(Util.Filter.IBU_LT))
+                    listFilter[Util.Filter.IBU_LT] = data.extras[Util.Filter.IBU_LT].toString()
+                else
+                    listFilter.remove(Util.Filter.IBU_LT)
+
+                if(data.extras.keySet().contains(Util.Filter.EBC_GT))
+                    listFilter[Util.Filter.EBC_GT] = data.extras[Util.Filter.EBC_GT].toString()
+                else
+                    listFilter.remove(Util.Filter.EBC_GT)
+
+                if(data.extras.keySet().contains(Util.Filter.EBC_LT))
+                    listFilter[Util.Filter.EBC_LT] = data.extras[Util.Filter.EBC_LT].toString()
+                else
+                    listFilter.remove(Util.Filter.EBC_LT)
+
+                if(data.extras.keySet().contains(Util.Filter.BEER_NAME))
+                    listFilter[Util.Filter.BEER_NAME] = data.extras[Util.Filter.BEER_NAME].toString()
+                else
+                    listFilter.remove(Util.Filter.BEER_NAME)
+
+                if(data.extras.keySet().contains(Util.Filter.YEAST))
+                    listFilter[Util.Filter.YEAST] = data.extras[Util.Filter.YEAST].toString()
+                else
+                    listFilter.remove(Util.Filter.YEAST)
+
+                if(data.extras.keySet().contains(Util.Filter.BREWED_BEFORE))
+                    listFilter[Util.Filter.BREWED_BEFORE] = data.extras[Util.Filter.BREWED_BEFORE].toString()
+                else
+                    listFilter.remove(Util.Filter.BREWED_BEFORE)
+
+                if(data.extras.keySet().contains(Util.Filter.BREWED_AFTER))
+                    listFilter[Util.Filter.BREWED_AFTER] = data.extras[Util.Filter.BREWED_AFTER].toString()
+                else
+                    listFilter.remove(Util.Filter.BREWED_AFTER)
+
+                if(data.extras.keySet().contains(Util.Filter.HOPS))
+                    listFilter[Util.Filter.HOPS] = data.extras[Util.Filter.HOPS].toString()
+                else
+                    listFilter.remove(Util.Filter.HOPS)
+
+                if(data.extras.keySet().contains(Util.Filter.MALT))
+                    listFilter[Util.Filter.MALT] = data.extras[Util.Filter.MALT].toString()
+                else
+                    listFilter.remove(Util.Filter.MALT)
+
+                if(data.extras.keySet().contains(Util.Filter.FOOD))
+                    listFilter[Util.Filter.FOOD] = data.extras[Util.Filter.FOOD].toString()
+                else
+                    listFilter.remove(Util.Filter.FOOD)
+
+                if(data.extras.keySet().contains(Util.Filter.IDS))
+                    listFilter[Util.Filter.IDS] = data.extras[Util.Filter.IDS].toString()
+                else
+                    listFilter.remove(Util.Filter.IDS)
+            }else{
+                listFilter.clear()
             }
 
-            val context = this
-            val getData = this
+            val context: Context = this
+            val getData: GetData = this
 
             val myTask = GetBeer(context, getData, myProgressBar)
             myTask.execute(listFilter)
