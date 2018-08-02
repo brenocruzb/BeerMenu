@@ -31,7 +31,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val beer: Beer = listBeer[position]
 
-        holder.tvNameBeer.text = "${beer.name} <-> $position"
+        holder.tvNameBeer.text = beer.name
         holder.tvDescription.text = "${context.getString(R.string.breweded_in)} ${beer.firstBrewed}"
         holder.beerImage.setImageURI(beer.imageUrl)
 

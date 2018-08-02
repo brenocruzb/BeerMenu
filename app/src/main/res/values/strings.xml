@@ -9,7 +9,7 @@
     <string name="filter_select">Selecione os Filtros</string>
     <string name="hint_date">Exp (mm-yyyy)</string>
     <string name="name">Nome:</string>
-    <string name="yeast">Fermento:</string>
+    <string name="yeast">Levedura:</string>
     <string name="brewed_before">Fabricado antes de:</string>
     <string name="brewed_after">Fabricado depois de:</string>
     <string name="invalide_input">Entrada inválida.</string>
@@ -27,4 +27,13 @@
     <string name="ids">ID\'s</string>
     <string name="hint_id">Exp (A|B|C)</string>
     <string name="toolbar_title">Menu de Cervejas</string>
+    <string name="beer">cerveja</string>
+    <string name="beer_detail">Detalhes da cerveja</string>
+    <string name="ingredients">Ingredientes</string>
+    <string name="description">Descrição</string>
+    <string name="default_big_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+    <string name="amount">Montante:</string>
+    <string name="add">Add:</string>
+    <string name="attribute">Atributo:</string>
+
 </resources>

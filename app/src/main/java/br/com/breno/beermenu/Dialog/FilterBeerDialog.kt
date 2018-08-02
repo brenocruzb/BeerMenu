@@ -281,8 +281,24 @@ class FilterBeerDialog: DialogFragment() {
             }
 
             if(listFilter.containsKey(Util.Filter.IDS)){
-                checkBox15.isChecked = true
-                editText15.setText(listFilter[Util.Filter.IDS])
+                if(listFilter.containsKey(getString(R.string.favorite))){
+                    val filterFavorite = listFilter[getString(R.string.favorite)]
+                    val filterIds = listFilter[Util.Filter.IDS]
+
+                    var resultFilterIds = ""
+
+                    if(!filterFavorite?.equals(filterIds)!!)
+                        resultFilterIds = filterIds?.replace("$filterFavorite|", "")!!
+
+                    if(resultFilterIds.isNotEmpty()){
+                        checkBox15.isChecked = true
+                        editText15.setText(resultFilterIds)
+                    }
+
+                }else{
+                    checkBox15.isChecked = true
+                    editText15.setText(listFilter[Util.Filter.IDS])
+                }
             }
         }
     }

@@ -122,7 +122,11 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
         val listBeer: ArrayList<Beer> = adapter.getList()
 
         when(message){
-            getString(R.string.on_click) -> Toast.makeText(this, listBeer[result].name, Toast.LENGTH_LONG).show()
+            getString(R.string.on_click) -> {
+                val intent = Intent(this@MainActivity, BeerActivity::class.java)
+                intent.putExtra(getString(R.string.beer), listBeer[result])
+                startActivity(intent)
+            }
             getString(R.string.favorite) -> {
 
                 val idBeer = listBeer[result].id
@@ -157,10 +161,6 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
             listFilter.remove(Util.Filter.PAGE)
 
             if(data.extras != null){
-                if(data.extras.keySet().contains(getString(R.string.favorite)))
-                    listFilter[getString(R.string.favorite)] = data.extras[getString(R.string.favorite)].toString()
-                else
-                    listFilter.remove(getString(R.string.favorite))
 
                 if(data.extras.keySet().contains(Util.Filter.ABV_GT))
                     listFilter[Util.Filter.ABV_GT] = data.extras[Util.Filter.ABV_GT].toString()
@@ -227,10 +227,39 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
                 else
                     listFilter.remove(Util.Filter.FOOD)
 
-                if(data.extras.keySet().contains(Util.Filter.IDS))
-                    listFilter[Util.Filter.IDS] = data.extras[Util.Filter.IDS].toString()
-                else
+
+                //É necessário o procedimento diferenciado na chave "ID's" já que "favoritos" também consome dela
+
+                var filterId = ""
+
+                if(data.extras.keySet().contains(getString(R.string.favorite))){
+                    val listId = beerBo.getAll()
+                    filterId = listId[0].toString()
+
+                    for(i in 1 until listId.size)
+                        filterId += "|${listId[i]}"
+
+                    listFilter[getString(R.string.favorite)] = filterId
+
+                    listFilter[Util.Filter.IDS] = filterId
+                }else
+                    listFilter.remove(getString(R.string.favorite))
+
+                if(data.extras.keySet().contains(Util.Filter.IDS)) {
+                    if(filterId.isNotEmpty()){
+                        filterId += "|${data.extras[Util.Filter.IDS]}"
+                    }else{
+                        filterId = data.extras[Util.Filter.IDS].toString()
+                    }
+
+                    listFilter[Util.Filter.IDS] = filterId
+                }
+
+                if( !data.extras.keySet().contains(getString(R.string.favorite)) &&
+                    !data.extras.keySet().contains(Util.Filter.IDS)){
                     listFilter.remove(Util.Filter.IDS)
+                }
+
             }else{
                 listFilter.clear()
             }
