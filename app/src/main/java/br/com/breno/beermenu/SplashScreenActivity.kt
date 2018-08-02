@@ -17,6 +17,7 @@ class SplashScreenActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_splash_screen)
 
+        /**Animação do logo da aplicação**/
         val fadeIn = AlphaAnimation(0f, 1f)
         fadeIn.interpolator = AccelerateInterpolator()
         fadeIn.duration = 500

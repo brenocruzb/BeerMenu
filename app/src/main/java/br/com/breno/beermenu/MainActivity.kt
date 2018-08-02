@@ -24,11 +24,16 @@ import com.google.gson.reflect.TypeToken
 
 class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
 
+    /**Adapter da aplicação**/
     private lateinit var adapter: BeerAdapter
 
+    /**Lista de filtros que o app utiliza para consumir a API**/
     private val listFilter = HashMap<String, String>()
+
+    /**Banco da aplicação. É utilizado para armazenar as bebidas favoritas**/
     private lateinit var beerBo: BeerBo
 
+    /**Método utilizado para converter uma String em objeto utilizando a API Gson**/
     private inline fun <reified T> Gson.fromJson(json: String) = this.fromJson<T>(json, object: TypeToken<T>() {}.type)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -47,13 +52,12 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
 
             when(id){
                 R.id.filter_toolbar ->{
+                    //Instancia do DialogFragment.
                     val filterBeerDialog = FilterBeerDialog()
 
                     val args = Bundle()
                     args.putString(resources.getString(R.string.filter), Gson().toJson(listFilter))
                     filterBeerDialog.arguments = args
-
-//                    filterBeerDialog.setTargetFragment(Fragment(), Util.FILTER_BEER)
                     filterBeerDialog.show(supportFragmentManager, "missiles")
                 }
             }
@@ -80,6 +84,7 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
         myRecyclerView.adapter = adapter
         myRecyclerView.addOnScrollListener(object :RecyclerView.OnScrollListener(){
             override fun onScrolled(recyclerView: RecyclerView?, dx: Int, dy: Int) {
+                //Gerenciamento da paginação do app
                 if(dy > 0){
                     val lastItemPosition: Int = llm.findLastVisibleItemPosition()
                     val isMultiple: Boolean = (lastItemPosition + 1) % 25 == 0
@@ -90,7 +95,7 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
 
                             listFilter[Util.Filter.PAGE] = ((lastItemPosition + 1) / 25 + 1).toString()
 
-                            val myTask = GetBeer(context, getData, myProgressBar)
+                            val myTask = GetBeer(getData, myProgressBar)
                             myTask.execute(listFilter)
                         }
                     }else if(!isMultiple && !loading){
@@ -100,24 +105,26 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
             }
         })
 
+        //Recuperação do estado da activity
         if(savedInstanceState != null && savedInstanceState.containsKey(Util.STATE_ACTIVITY)){
             val list: HashMap<String, String> = Gson().fromJson(savedInstanceState.getString(Util.STATE_ACTIVITY))
             listFilter.clear()
             listFilter.putAll(list)
         }
 
-        val myTask = GetBeer(context, getData, myProgressBar)
+        //Execução assíncrona para o consumo da API.
+        val myTask = GetBeer(getData, myProgressBar)
         myTask.execute(listFilter)
     }
 
-    //Salva o filtro para o usuário não perder a lista caso rotacione o celular
+    /**Salva o filtro para o usuário não perder a lista caso rotacione o celular**/
     override fun onSaveInstanceState(outState: Bundle?) {
         outState?.putString(Util.STATE_ACTIVITY, Gson().toJson(listFilter))
 
         super.onSaveInstanceState(outState)
     }
 
-    //Retorno do Adapter
+    /**Retorno do Adapter**/
     override fun myResult(result: Int, message: String) {
         val listBeer: ArrayList<Beer> = adapter.getList()
 
@@ -141,7 +148,7 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
         }
     }
 
-    //Retorno do REST
+    /**Retorno da chamada assíncrona**/
     override fun getResultListBeer(listBeer: List<Beer>?) {
         if(listBeer != null){
             listBeer.forEach {
@@ -154,7 +161,7 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
         }
     }
 
-    //Rotorno dos Filtros
+    /**Rotorno do dialog dos filtros**/
     override fun getItemsFilter(requestCode: Int, resultCode: Int, data: Intent) {
         if(resultCode == Util.FILTER_BEER){
             adapter.clearList()
@@ -228,7 +235,7 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
                     listFilter.remove(Util.Filter.FOOD)
 
 
-                //É necessário o procedimento diferenciado na chave "ID's" já que "favoritos" também consome dela
+                //É necessário o procedimento diferenciado no filtro "ID's" já que "favoritos" também consome dela
 
                 var filterId = ""
 
@@ -264,10 +271,9 @@ class MainActivity : AppCompatActivity(), MyResult, GetData, GetItemsFilter {
                 listFilter.clear()
             }
 
-            val context: Context = this
             val getData: GetData = this
 
-            val myTask = GetBeer(context, getData, myProgressBar)
+            val myTask = GetBeer(getData, myProgressBar)
             myTask.execute(listFilter)
         }
     }

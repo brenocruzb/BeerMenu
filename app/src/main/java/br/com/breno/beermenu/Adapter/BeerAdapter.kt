@@ -12,12 +12,11 @@ import br.com.breno.beermenu.Interface.MyResult
 import br.com.breno.beermenu.Domain.Beer
 import br.com.breno.beermenu.R
 import com.facebook.drawee.view.SimpleDraweeView
-import com.facebook.common.util.UriUtil
 
 
 class BeerAdapter constructor(private val context: Context, private val myResult: MyResult?) : RecyclerView.Adapter<BeerAdapter.MyViewHolder>(){
 
-    //List
+    /**Lista de bebidas. A lista será preenchida de acordo com os filtros dispostos na aplicação.**/
     private val listBeer: ArrayList<Beer> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
@@ -35,6 +34,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         holder.tvDescription.text = "${context.getString(R.string.breweded_in)} ${beer.firstBrewed}"
         holder.beerImage.setImageURI(beer.imageUrl)
 
+        //Verifica se a bebida é marcada como favorita
         val resourceId = (if(beer.favoriteStatus) R.drawable.selected_favorite else R.drawable.unselected_favorite)
 
         //local_db
@@ -45,10 +45,12 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         return listBeer.size
     }
 
+    /**Retorna a lista de bebidas**/
     fun getList(): ArrayList<Beer>{
         return listBeer
     }
 
+    /**Limpa a lista de bebidas**/
     fun clearList(){
         listBeer.clear()
         try {
@@ -58,6 +60,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         }
     }
 
+    /**Adisiona itens a lista de bebidas**/
     fun addList(listBeer: List<Beer>){
         this.listBeer.addAll(listBeer)
         try {
@@ -67,6 +70,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         }
     }
 
+    /**Marca uma bebida como favorita**/
     fun markFavorite(position: Int){
         listBeer[position].favoriteStatus = !listBeer[position].favoriteStatus
         try {

@@ -1,9 +1,13 @@
 package br.com.breno.beermenu
 
 object Util {
+    /**Constante utilizada para comunicação da activity com o dialog**/
     val FILTER_BEER: Int = 15
+
+    /**Constante utilizada para salvar o estado da activity**/
     val STATE_ACTIVITY: String = "state-activity"
 
+    /**Constantes utilizadas nos filtros de busca disponibilizados pela API**/
     object Filter{
         val ABV_GT: String = "abv_gt"
         val ABV_LT: String = "abv_lt"

@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import br.com.breno.beermenu.Domain.Beer
 import kotlinx.android.synthetic.main.activity_beer.*
-import java.util.*
 
 class BeerActivity: AppCompatActivity() {
 
@@ -47,6 +46,7 @@ class BeerActivity: AppCompatActivity() {
         }
     }
 
+    /**Evento chamado ao clicar no cursor Voltar do toolbar**/
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return true

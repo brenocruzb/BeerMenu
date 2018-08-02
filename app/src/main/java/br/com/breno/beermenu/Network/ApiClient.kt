@@ -1,7 +1,5 @@
-package br.com.breno.beermenu.Task
+package br.com.breno.beermenu.Network
 
-import android.content.Context
-import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -12,7 +10,8 @@ object ApiClient {
 
     private var timeOut = 10
 
-    fun getClient(context: Context): Retrofit? {
+    /**Método de configuração para comunicação com a API**/
+    fun getClient(): Retrofit? {
         if (retrofit == null) {
 
             val urlBase = "https://api.punkapi.com/v2/"
@@ -20,18 +19,11 @@ object ApiClient {
             val okHttpClient = OkHttpClient.Builder()
                     .readTimeout(timeOut.toLong(), TimeUnit.SECONDS)
                     .connectTimeout(timeOut.toLong(), TimeUnit.SECONDS)
-//                    .addInterceptor(GzipRequestInterceptor())
                     .build()
-
-//            val gson = GsonBuilder()
-//                    .registerTypeHierarchyAdapter(ByteArray::class.java, ByteArrayToBase64TypeAdapter())
-//                    .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'-0300'")
-//                    .create()
 
             retrofit = Retrofit.Builder()
                     .baseUrl(urlBase)
                     .client(okHttpClient)
-//                    .addConverterFactory(GsonConverterFactory.create(gson))
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
         }

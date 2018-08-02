@@ -3,6 +3,7 @@ package br.com.breno.beermenu.Bo
 import android.content.Context
 import br.com.breno.beermenu.Dao.BeerDao
 
+/**Classe responsável por comunicar a activity com o Dao da aplicação**/
 class BeerBo constructor(context: Context) {
     private val beerDao = BeerDao(context)
 

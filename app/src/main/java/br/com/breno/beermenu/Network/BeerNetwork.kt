@@ -1,17 +1,18 @@
 package br.com.breno.beermenu.Network
 
-import android.content.Context
 import android.util.Log
 import br.com.breno.beermenu.Domain.Beer
-import br.com.breno.beermenu.Task.ApiClient
-import br.com.breno.beermenu.Task.AppService
 
-class BeerNetwork constructor(context: Context) {
-    private val mAppService = ApiClient.getClient(context)?.create(AppService::class.java)
+class BeerNetwork {
+    /**Variável que cria a comunicação com a API**/
+    private val appService = ApiClient.getClient()?.create(AppService::class.java)
+
+    /**Constante utilizada para erros da classe**/
     private val nameNetwork = "BeerNetwork"
 
+    /**Método que consome a API. Retorna uma lista de bebidas de acordo com os filtros passados no Hash**/
     fun get(listFilter: HashMap<String, String>): List<Beer>?{
-        val call = mAppService?.listBeersFiltered(listFilter)
+        val call = appService?.listBeersFiltered(listFilter)
 
         try{
             val response = call?.execute()
