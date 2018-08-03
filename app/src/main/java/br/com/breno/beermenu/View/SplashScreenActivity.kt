@@ -1,4 +1,4 @@
-package br.com.breno.beermenu
+package br.com.breno.beermenu.View
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.AlphaAnimation
 import android.view.animation.AnimationSet
+import br.com.breno.beermenu.R
 import kotlinx.android.synthetic.main.activity_splash_screen.*
 
 

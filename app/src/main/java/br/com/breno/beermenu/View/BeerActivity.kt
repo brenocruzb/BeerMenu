@@ -1,8 +1,9 @@
-package br.com.breno.beermenu
+package br.com.breno.beermenu.View
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
-import br.com.breno.beermenu.Domain.Beer
+import br.com.breno.beermenu.Presenter.Domain.Beer
+import br.com.breno.beermenu.R
 import kotlinx.android.synthetic.main.activity_beer.*
 
 class BeerActivity: AppCompatActivity() {

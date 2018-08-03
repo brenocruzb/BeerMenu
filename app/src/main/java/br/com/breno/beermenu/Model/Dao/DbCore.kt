@@ -1,10 +1,10 @@
-package br.com.breno.beermenu.Dao
+package br.com.breno.beermenu.Model.Dao
 
-import android.content.Context
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import br.com.breno.beermenu.MVP
 
-class DbCore constructor(private val context: Context) : SQLiteOpenHelper(context, NAME_DB, null, 1) {
+class DbCore constructor(private val presenter: MVP.PresenterInter) : SQLiteOpenHelper(presenter.getContext(), NAME_DB, null, 1) {
 
     private var sInstance: DbCore? = null
 
@@ -16,7 +16,7 @@ class DbCore constructor(private val context: Context) : SQLiteOpenHelper(contex
     fun instance(): DbCore {
 
         if (sInstance == null) {
-            sInstance = DbCore(context.applicationContext)
+            sInstance = DbCore(presenter)
         }
         return sInstance as DbCore
     }

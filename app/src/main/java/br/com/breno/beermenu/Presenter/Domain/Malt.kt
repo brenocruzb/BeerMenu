@@ -1,4 +1,4 @@
-package br.com.breno.beermenu.Domain
+package br.com.breno.beermenu.Presenter.Domain
 
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable

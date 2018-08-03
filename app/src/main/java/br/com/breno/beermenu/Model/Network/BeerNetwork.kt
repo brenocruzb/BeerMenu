@@ -1,7 +1,7 @@
-package br.com.breno.beermenu.Network
+package br.com.breno.beermenu.Model.Network
 
 import android.util.Log
-import br.com.breno.beermenu.Domain.Beer
+import br.com.breno.beermenu.Presenter.Domain.Beer
 
 class BeerNetwork {
     /**Variável que cria a comunicação com a API**/

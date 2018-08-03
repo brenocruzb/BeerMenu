@@ -1,11 +1,11 @@
-package br.com.breno.beermenu.Bo
+package br.com.breno.beermenu.Presenter.Bo
 
-import android.content.Context
-import br.com.breno.beermenu.Dao.BeerDao
+import br.com.breno.beermenu.MVP
+import br.com.breno.beermenu.Model.Dao.BeerDao
 
 /**Classe responsável por comunicar a activity com o Dao da aplicação**/
-class BeerBo constructor(context: Context) {
-    private val beerDao = BeerDao(context)
+class BeerBo constructor(presenter: MVP.PresenterInter) {
+    private val beerDao = BeerDao(presenter)
 
     fun insert(idBeer: Int): Long{
         return beerDao.insert(idBeer)

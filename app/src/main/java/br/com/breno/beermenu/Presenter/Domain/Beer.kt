@@ -1,5 +1,6 @@
-package br.com.breno.beermenu.Domain
+package br.com.breno.beermenu.Presenter.Domain
 
+import br.com.breno.beermenu.R
 import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
@@ -24,4 +25,9 @@ class Beer: Serializable {
 
     @Transient
     var favoriteStatus: Boolean = false
+
+    //Verifica se a bebida é marcada como favorita
+    fun getDrawable(): Int{
+        return if(this.favoriteStatus) R.drawable.selected_favorite else R.drawable.unselected_favorite
+    }
 }

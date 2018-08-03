@@ -1,4 +1,4 @@
-package br.com.breno.beermenu.Adapter
+package br.com.breno.beermenu.View.Adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -8,13 +8,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import br.com.breno.beermenu.Interface.MyResult
-import br.com.breno.beermenu.Domain.Beer
+import br.com.breno.beermenu.MVP
+import br.com.breno.beermenu.Presenter.Domain.Beer
 import br.com.breno.beermenu.R
 import com.facebook.drawee.view.SimpleDraweeView
 
 
-class BeerAdapter constructor(private val context: Context, private val myResult: MyResult?) : RecyclerView.Adapter<BeerAdapter.MyViewHolder>(){
+class BeerAdapter constructor(private val context: Context, private val view: MVP.ViewInter?) : RecyclerView.Adapter<BeerAdapter.MyViewHolder>(){
 
     /**Lista de bebidas. A lista será preenchida de acordo com os filtros dispostos na aplicação.**/
     private val listBeer: ArrayList<Beer> = ArrayList()
@@ -34,8 +34,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         holder.tvDescription.text = "${context.getString(R.string.breweded_in)} ${beer.firstBrewed}"
         holder.beerImage.setImageURI(beer.imageUrl)
 
-        //Verifica se a bebida é marcada como favorita
-        val resourceId = (if(beer.favoriteStatus) R.drawable.selected_favorite else R.drawable.unselected_favorite)
+        val resourceId = beer.getDrawable()
 
         //local_db
         holder.favoriteImage.setImageURI("res:///$resourceId")
@@ -56,7 +55,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         try {
             notifyDataSetChanged()
         }catch (e: Exception){
-            Log.e("MyError", if (e.message != null) e.message else e.toString())
+            Log.e("MyError", e.message)
         }
     }
 
@@ -66,7 +65,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         try {
             notifyDataSetChanged()
         }catch (e: Exception){
-            Log.e("MyError", if (e.message != null) e.message else e.toString())
+            Log.e("MyError", e.message)
         }
     }
 
@@ -76,7 +75,7 @@ class BeerAdapter constructor(private val context: Context, private val myResult
         try {
             notifyItemChanged(position)
         }catch (e: Exception){
-            Log.e("MyError", if (e.message != null) e.message else e.toString())
+            Log.e("MyError", e.message)
         }
     }
 
@@ -94,8 +93,8 @@ class BeerAdapter constructor(private val context: Context, private val myResult
 
         override fun onClick(view: View?) {
             when(view?.id){
-                R.id.favorite-> myResult?.myResult(adapterPosition, context.getString(R.string.favorite))
-                else ->         myResult?.myResult(adapterPosition, context.getString(R.string.on_click))
+                R.id.favorite-> this@BeerAdapter.view?.updateIsFavorite(adapterPosition)
+                else ->         this@BeerAdapter.view?.showBeer(adapterPosition)
             }
         }
     }

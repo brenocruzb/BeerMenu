@@ -1,4 +1,4 @@
-package br.com.breno.beermenu.Dialog
+package br.com.breno.beermenu.Presenter.Dialog
 
 import android.annotation.SuppressLint
 import android.app.Dialog
@@ -11,9 +11,9 @@ import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
 import android.widget.EditText
-import br.com.breno.beermenu.MainActivity
+import br.com.breno.beermenu.View.MainActivity
 import br.com.breno.beermenu.R
-import br.com.breno.beermenu.Util
+import br.com.breno.beermenu.View.Util
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -189,7 +189,7 @@ class FilterBeerDialog: DialogFragment() {
                 if(checkBoxIds.isChecked && editTextIds.text.trim().isNotEmpty()) intent.putExtra(Util.Filter.IDS, editTextIds.text)
 
                 //Manda os filtros selecionados para a mainActivity
-                (activity as MainActivity).getItemsFilter(targetRequestCode, Util.FILTER_BEER, intent)
+                (activity as MainActivity).getItemsFilter(intent)
                 dismiss()
             }
         }
