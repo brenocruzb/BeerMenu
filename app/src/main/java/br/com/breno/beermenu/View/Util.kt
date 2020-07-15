@@ -1,9 +1,6 @@
-package br.com.breno.beermenu
+package br.com.breno.beermenu.View
 
 object Util {
-    /**Constante utilizada para comunicação da activity com o dialog**/
-    val FILTER_BEER: Int = 15
-
     /**Constante utilizada para salvar o estado da activity**/
     val STATE_ACTIVITY: String = "state-activity"
 

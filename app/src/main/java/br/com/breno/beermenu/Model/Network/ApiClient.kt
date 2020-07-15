@@ -1,4 +1,4 @@
-package br.com.breno.beermenu.Network
+package br.com.breno.beermenu.Model.Network
 
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit

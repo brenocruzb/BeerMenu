@@ -1,20 +1,18 @@
-package br.com.breno.beermenu.Task
+package br.com.breno.beermenu.Model.Task
 
 import android.annotation.SuppressLint
 import android.os.AsyncTask
-import android.view.View
-import android.widget.ProgressBar
-import br.com.breno.beermenu.Domain.Beer
-import br.com.breno.beermenu.Interface.GetData
-import br.com.breno.beermenu.Network.BeerNetwork
+import br.com.breno.beermenu.MVP
+import br.com.breno.beermenu.Presenter.Domain.Beer
+import br.com.breno.beermenu.Model.Network.BeerNetwork
 
 @SuppressLint("StaticFieldLeak")
-class GetBeer constructor(private val getData: GetData?, private val progressBar: ProgressBar) : AsyncTask<HashMap<String, String>, Void, List<Beer>?>() {
+class GetBeer constructor(private val presenter: MVP.PresenterInter?) : AsyncTask<HashMap<String, String>, Void, List<Beer>?>() {
 
     /**Antes de solicitar os dados da chamada REST, o progressBar fica visível**/
     override fun onPreExecute() {
         super.onPreExecute()
-        progressBar.visibility = View.VISIBLE
+        presenter?.showProgressBar(true)
     }
 
     /**Consumo da API. Se não houver problema com a conexão, o método retorna uma lista com as bebidas,
@@ -29,7 +27,7 @@ class GetBeer constructor(private val getData: GetData?, private val progressBar
     /**Ao fim da chamada, a interface GetData é acionada e o progressBar fica oculto novamente**/
     override fun onPostExecute(result: List<Beer>?) {
         super.onPostExecute(result)
-        progressBar.visibility = View.GONE
-        getData?.getResultListBeer(result)
+        presenter?.showProgressBar(false)
+        presenter?.getResultListBeer(result)
     }
 }

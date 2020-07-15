@@ -1,13 +1,13 @@
-package br.com.breno.beermenu.Dao
+package br.com.breno.beermenu.Model.Dao
 
 import android.annotation.TargetApi
 import android.content.ContentValues
-import android.content.Context
 import android.os.Build
 import android.util.Log
+import br.com.breno.beermenu.MVP
 
-class BeerDao constructor(context: Context) {
-    private val dbCore: DbCore = DbCore(context).instance()
+class BeerDao constructor(presenter: MVP.PresenterInter) {
+    private val dbCore: DbCore = DbCore(presenter).instance()
     private val nameDao = "Beer"
 
     @TargetApi(Build.VERSION_CODES.KITKAT)

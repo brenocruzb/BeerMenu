@@ -1,6 +1,6 @@
-package br.com.breno.beermenu.Network
+package br.com.breno.beermenu.Model.Network
 
-import br.com.breno.beermenu.Domain.Beer
+import br.com.breno.beermenu.Presenter.Domain.Beer
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.QueryMap
